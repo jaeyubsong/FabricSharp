@@ -25,7 +25,8 @@ RUN apk add --no-cache \
 
 RUN echo 'http://nl.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories
 RUN echo 'http://nl.alpinelinux.org/alpine/v3.10/main' >> /etc/apk/repositories
-RUN apk update
+RUN apk upgrade
+RUN apk update --allow-untrusted
 
 RUN apk add --no-cache \ 
 #   crypto++-dev=8.6.0-r0 \
@@ -53,7 +54,7 @@ RUN apk add --no-cache \
 
 RUN echo 'http://nl.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories
 RUN echo 'http://nl.alpinelinux.org/alpine/v3.10/main' >> /etc/apk/repositories
-RUN apk update
+RUN apk update --allow-untrusted
 
 RUN apk add --no-cache \ 
 #   crypto++-dev=8.6.0-r0 \
