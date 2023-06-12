@@ -1,0 +1,58 @@
+# export GOPATH=/home/jjoriping/Power-Fabric/go
+
+version: '2'
+networks:
+  basic:
+services:
+  fast.org1.jjo.kr:
+    container_name: fast.org1.jjo.kr
+    image: hyperledger/fabric-sharp-peer
+    environment:
+      - CC_TYPE=original
+      - BLOCK_SIZE=1000
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_PEER_ID=fast.org1.jjo.kr
+      - CORE_LOGGING_PEER=debug
+      - CORE_CHAINCODE_LOGGING_LEVEL=DEBUG
+      - CORE_PEER_LOCALMSPID=Org1MSP
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/
+      - CORE_PEER_ADDRESS=fast.org1.jjo.kr:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=fast.org1.jjo.kr:7051
+      - CORE_PEER_CHAINCODEADDRESS=fast.org1.jjo.kr:7052
+      - CORE_PEER_GOSSIP_USELEADERELECTION=false
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      # - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_basic
+      # - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      # - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb1:5984
+      # - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
+      # - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: peer node start
+    ports:
+      - 7051:7051
+      - 7053:7053
+      # - 8051:7051
+      # - 8053:7053
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./crypto-config/peerOrganizations/org1.jjo.kr/peers/fast.org1.jjo.kr/msp:/etc/hyperledger/msp/peer
+        - ./crypto-config/peerOrganizations/org1.jjo.kr/users:/etc/hyperledger/msp/users
+        - ./config:/etc/hyperledger/configtx
+    # extra_hosts:
+    # - "orderer.example.com:<First machine IP address>"
+    # - "peer0.org1.example.com:<First machine IP address>"
+    # - "ca.example.com:<First machine IP address>"
+    # depends_on:
+    #   - couchdb1
+    networks:
+      - basic
+  # couchdb1:
+  #   container_name: couchdb1
+  #   image: hyperledger/fabric-couchdb
+  #   environment:
+  #     - COUCHDB_USER=
+  #     - COUCHDB_PASSWORD=
+  #   ports:
+  #     - 6984:5984
+  #   networks:
+  #     - basic
